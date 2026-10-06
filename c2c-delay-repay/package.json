@@ -1,0 +1,35 @@
+{
+  "name": "c2c-delay-repay",
+  "version": "0.1.0",
+  "description": "Finds delayed c2c journeys in your TfL contactless history and builds ready-to-submit Delay Repay claim packs with a QR code. You submit; it never does.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "bin": { "c2c-delay-repay": "dist/cli.js" },
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "demo": "tsx src/cli.ts scan --csv fixtures/tfl/journeys-sample.csv --fixtures fixtures/hsp --out out --now 2026-09-21",
+    "serve": "tsx src/cli.ts serve --out out"
+  },
+  "dependencies": {
+    "csv-parse": "^5.6.0",
+    "pdf-lib": "^1.17.1",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@types/node": "^22.10.0",
+    "@types/pngjs": "^6.0.5",
+    "@types/qrcode": "^1.5.5",
+    "jsqr": "^1.4.0",
+    "pngjs": "^7.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
