@@ -26,6 +26,18 @@ export function config(overrides: Partial<Config> = {}): Config {
 
 export const disrupted = () => new FixtureTfl(fixtures("disrupted"), TODAY);
 export const clean = () => new FixtureTfl(fixtures("clean"), TODAY);
+/** c2c severe delays; planner falls back to the District line. */
+export const c2c = () => new FixtureTfl(fixtures("c2c"), TODAY);
+
+export const c2cTrip: Trip = {
+  name: "Commute",
+  from: "Upminster Rail Station",
+  to: "Fenchurch Street Rail Station",
+  arriveBy: "09:00",
+  days: ["mon", "tue", "wed", "thu", "fri"],
+  modes: ["national-rail", "tube", "overground", "elizabeth-line", "dlr", "bus"],
+  maxWalkingMinutes: 20,
+};
 
 export class MemoryNotifier implements Notifier {
   sent: string[] = [];

@@ -1,16 +1,17 @@
 {
-  "$comment": "Copy to commute.config.json and edit. Secrets (TFL_APP_KEY, TELEGRAM_BOT_TOKEN, ANTHROPIC_API_KEY) go in environment variables, never here.",
+  "$comment": "Copy to commute.config.json and edit. Secrets (TFL_APP_KEY, TELEGRAM_BOT_TOKEN, ANTHROPIC_API_KEY) go in environment variables, never here. Include national-rail in modes for c2c, Thameslink, Southeastern and other train operators.",
   "telegramChatId": "123456789",
   "notifyWhenClear": false,
   "trips": [
     {
       "name": "Commute",
-      "from": "Finchley Central Underground Station",
-      "to": "Bank Underground Station",
+      "from": "Upminster Rail Station",
+      "to": "Fenchurch Street Rail Station",
       "arriveBy": "09:00",
       "days": ["mon", "tue", "wed", "thu", "fri"],
-      "modes": ["tube", "overground", "elizabeth-line", "dlr", "bus"],
-      "maxWalkingMinutes": 20
+      "modes": ["national-rail", "tube", "overground", "elizabeth-line", "dlr", "bus"],
+      "maxWalkingMinutes": 20,
+      "usualLines": ["c2c"]
     }
   ]
 }

@@ -1,0 +1,33 @@
+{
+  "journeys": [
+    {
+      "startDateTime": "2026-10-07T07:58:00",
+      "arrivalDateTime": "2026-10-07T08:53:00",
+      "duration": 55,
+      "legs": [
+        {
+          "duration": 5,
+          "mode": { "id": "walking", "name": "walking" },
+          "departurePoint": { "commonName": "Home" },
+          "arrivalPoint": { "commonName": "Upminster Underground Station", "naptanId": "940GZZLUUPM" },
+          "instruction": { "summary": "Walk to Upminster Underground Station" }
+        },
+        {
+          "duration": 46,
+          "mode": { "id": "tube", "name": "tube" },
+          "departurePoint": { "commonName": "Upminster Underground Station", "naptanId": "940GZZLUUPM" },
+          "arrivalPoint": { "commonName": "Tower Hill Underground Station", "naptanId": "940GZZLUTWH" },
+          "routeOptions": [{ "name": "District", "directions": ["Ealing Broadway"], "lineIdentifier": { "id": "district", "name": "District" } }],
+          "instruction": { "summary": "District line towards Ealing Broadway" }
+        },
+        {
+          "duration": 4,
+          "mode": { "id": "walking", "name": "walking" },
+          "departurePoint": { "commonName": "Tower Hill Underground Station", "naptanId": "940GZZLUTWH" },
+          "arrivalPoint": { "commonName": "Work" },
+          "instruction": { "summary": "Walk to Work" }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+[
+  {
+    "id": "district",
+    "name": "District",
+    "modeName": "tube",
+    "lineStatuses": [{ "statusSeverity": 10, "statusSeverityDescription": "Good Service", "validityPeriods": [] }]
+  },
+  {
+    "id": "elizabeth",
+    "name": "Elizabeth line",
+    "modeName": "elizabeth-line",
+    "lineStatuses": [{ "statusSeverity": 10, "statusSeverityDescription": "Good Service", "validityPeriods": [] }]
+  },
+  {
+    "id": "c2c",
+    "name": "c2c",
+    "modeName": "national-rail",
+    "lineStatuses": [
+      {
+        "statusSeverity": 6,
+        "statusSeverityDescription": "Severe Delays",
+        "reason": "c2c: Severe delays between Barking and Fenchurch Street due to overhead line damage at West Ham. Tickets accepted on the District line and London Buses.",
+        "validityPeriods": [{ "fromDate": "2026-10-07T06:00:00Z", "toDate": "2026-10-07T11:00:00Z", "isNow": true }]
+      }
+    ]
+  },
+  {
+    "id": "thameslink",
+    "name": "Thameslink",
+    "modeName": "national-rail",
+    "lineStatuses": [{ "statusSeverity": 10, "statusSeverityDescription": "Good Service", "validityPeriods": [] }]
+  }
+]

@@ -69,11 +69,27 @@ describe("TflClient", () => {
     await expect(new TflClient(undefined, fetchImpl).lineStatus(["tube"])).rejects.toThrow(/TfL 429/);
   });
 
-  it("asks for status only on modes TfL publishes it for", async () => {
-    const { fetchImpl, calls } = fakeFetch(() => ({ status: 200, body: [] }));
-    await new TflClient(undefined, fetchImpl).lineStatus(["tube", "national-rail", "elizabeth-line"]);
-    expect(calls[0]!.pathname).toBe("/Line/Mode/tube,elizabeth-line/Status");
+  it("fetches TfL modes and National Rail status separately and merges them", async () => {
+    const tube = [{ id: "district", name: "District", modeName: "tube", lineStatuses: [] }];
+    const rail = [{ id: "c2c", name: "c2c", modeName: "national-rail", lineStatuses: [] }];
+    const { fetchImpl, calls } = fakeFetch((url) => ({ status: 200, body: url.pathname.includes("national-rail") ? rail : tube }));
+    const statuses = await new TflClient(undefined, fetchImpl).lineStatus(["tube", "national-rail", "elizabeth-line"]);
+    expect(calls.map((c) => c.pathname).sort()).toEqual(["/Line/Mode/national-rail/Status", "/Line/Mode/tube,elizabeth-line/Status"]);
     expect(calls[0]!.searchParams.get("detail")).toBe("true");
+    expect(statuses.map((s) => s.id)).toEqual(["district", "c2c"]);
+  });
+
+  it("skips the National Rail call when no trip uses it", async () => {
+    const { fetchImpl, calls } = fakeFetch(() => ({ status: 200, body: [] }));
+    await new TflClient(undefined, fetchImpl).lineStatus(["tube"]);
+    expect(calls.map((c) => c.pathname)).toEqual(["/Line/Mode/tube/Status"]);
+  });
+
+  it("carries on with TfL modes if the National Rail status call fails", async () => {
+    const tube = [{ id: "district", name: "District", modeName: "tube", lineStatuses: [] }];
+    const { fetchImpl } = fakeFetch((url) => (url.pathname.includes("national-rail") ? { status: 500, body: {} } : { status: 200, body: tube }));
+    const statuses = await new TflClient(undefined, fetchImpl).lineStatus(["tube", "national-rail"]);
+    expect(statuses.map((s) => s.id)).toEqual(["district"]);
   });
 });
 
@@ -88,5 +104,11 @@ describe("journey helpers", () => {
     const legs = today.journeys![0]!.legs;
     expect(describeLeg(legs[0]!)).toBe("Walk: Home → Finchley Central Underground Station (4 min)");
     expect(describeLeg(legs[1]!)).toBe("Northern line: Finchley Central Underground Station → Euston Underground Station (22 min)");
+  });
+
+  it("labels a National Rail leg by operator", async () => {
+    const base = JSON.parse(await readFile(`${fixtures("c2c")}/journey-baseline.json`, "utf8")) as JourneyResults;
+    expect(describeLeg(base.journeys![0]!.legs[1]!)).toBe("c2c train: Upminster Rail Station → Fenchurch Street Rail Station (25 min)");
+    expect(linesUsed(base.journeys![0]!)).toEqual(["c2c"]);
   });
 });

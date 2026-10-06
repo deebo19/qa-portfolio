@@ -1,0 +1,33 @@
+{
+  "journeys": [
+    {
+      "startDateTime": "2026-10-14T08:21:00",
+      "arrivalDateTime": "2026-10-14T08:54:00",
+      "duration": 33,
+      "legs": [
+        {
+          "duration": 5,
+          "mode": { "id": "walking", "name": "walking" },
+          "departurePoint": { "commonName": "Home" },
+          "arrivalPoint": { "commonName": "Upminster Rail Station", "naptanId": "910GUPMNSTR" },
+          "instruction": { "summary": "Walk to Upminster Rail Station" }
+        },
+        {
+          "duration": 25,
+          "mode": { "id": "national-rail", "name": "national-rail" },
+          "departurePoint": { "commonName": "Upminster Rail Station", "naptanId": "910GUPMNSTR" },
+          "arrivalPoint": { "commonName": "Fenchurch Street Rail Station", "naptanId": "910GFENCHRS" },
+          "routeOptions": [{ "name": "c2c", "directions": ["London Fenchurch Street"], "lineIdentifier": { "id": "c2c", "name": "c2c" } }],
+          "instruction": { "summary": "c2c towards London Fenchurch Street" }
+        },
+        {
+          "duration": 3,
+          "mode": { "id": "walking", "name": "walking" },
+          "departurePoint": { "commonName": "Fenchurch Street Rail Station", "naptanId": "910GFENCHRS" },
+          "arrivalPoint": { "commonName": "Work" },
+          "instruction": { "summary": "Walk to Work" }
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { assessTrip, classify } from "../src/impact.js";
 import type { LineStatus, TflSource } from "../src/tfl.js";
-import { TODAY, clean, disrupted, trip } from "./helpers.js";
+import { TODAY, c2c, c2cTrip, clean, disrupted, trip } from "./helpers.js";
 
 describe("classify", () => {
   const status = (entries: LineStatus["lineStatuses"]): LineStatus => ({ id: "northern", name: "Northern", modeName: "tube", lineStatuses: entries });
@@ -65,6 +65,16 @@ describe("assessTrip", () => {
     // The clean fixture has severe delays on the Central line, so this commuter is affected.
     expect(impact.affected).toBe(true);
     expect(impact.severity).toBe("severe");
+  });
+
+  it("covers a National Rail commute: c2c severe delays, planner falls back to the District line", async () => {
+    const impact = await assessTrip(c2c(), c2cTrip, TODAY);
+    expect(impact.affected).toBe(true);
+    expect(impact.severity).toBe("severe");
+    expect(impact.usualLines).toEqual(["c2c"]);
+    expect(impact.problems.map((p) => `${p.lineName}: ${p.status}`)).toEqual(["c2c: Severe Delays"]);
+    expect(impact.rerouted).toBe(true);
+    expect(impact.extraMinutes).toBe(22);
   });
 
   it("rates minor delays on the usual line as minor", async () => {

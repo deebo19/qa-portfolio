@@ -128,10 +128,22 @@ export class TflClient implements TflSource {
   }
 
   async lineStatus(modes: readonly string[]): Promise<LineStatus[]> {
-    // Status is only published for TfL-run modes; drop the rest so the call doesn't 404.
-    const supported = modes.filter((m) => ["tube", "overground", "elizabeth-line", "dlr", "tram", "bus"].includes(m));
-    if (supported.length === 0) return [];
-    return this.get<LineStatus[]>(`/Line/Mode/${supported.join(",")}/Status`, { detail: "true" });
+    // TfL-run modes have rich status. National Rail operators (c2c, Thameslink, Southeastern...)
+    // are also published under the national-rail mode, but with less detail and less reliably,
+    // so they are fetched separately and a failure there doesn't sink the whole check.
+    const tflModes = modes.filter((m) => ["tube", "overground", "elizabeth-line", "dlr", "tram", "bus"].includes(m));
+    const wantRail = modes.includes("national-rail");
+
+    const [tfl, rail] = await Promise.allSettled([
+      tflModes.length ? this.get<LineStatus[]>(`/Line/Mode/${tflModes.join(",")}/Status`, { detail: "true" }) : Promise.resolve([]),
+      wantRail ? this.get<LineStatus[]>(`/Line/Mode/national-rail/Status`, { detail: "true" }) : Promise.resolve([]),
+    ]);
+    if (tfl.status === "rejected") throw tfl.reason;
+    if (rail.status === "rejected") {
+      console.error(`National Rail status unavailable, continuing with TfL modes only: ${(rail.reason as Error).message}`);
+      return tfl.value;
+    }
+    return [...tfl.value, ...rail.value];
   }
 
   async journey(q: JourneyQuery, attempt = 0): Promise<JourneyResults> {
@@ -201,6 +213,11 @@ export function linesUsed(j: Journey): string[] {
 /** Short one-line description: "Northern line Finchley Central → Bank (32 min)". */
 export function describeLeg(leg: Leg): string {
   const line = leg.routeOptions?.[0]?.lineIdentifier?.name;
-  const mode = leg.mode.id === "walking" ? "Walk" : line ? `${line}${leg.mode.id === "tube" ? " line" : ""}` : leg.mode.name;
+  const mode =
+    leg.mode.id === "walking"
+      ? "Walk"
+      : line
+        ? `${line}${leg.mode.id === "tube" ? " line" : leg.mode.id === "national-rail" ? " train" : ""}`
+        : leg.mode.name;
   return `${mode}: ${leg.departurePoint.commonName} → ${leg.arrivalPoint.commonName} (${leg.duration} min)`;
 }

@@ -48,6 +48,8 @@ Avoid today: Northern
 
    Add more trips to the list for a second commute, the gym, or anywhere else you go on a schedule. Calendar-driven trips are the next step on the roadmap.
 
+   **National Rail (c2c, Thameslink, Southeastern, Greater Anglia and others).** Put `national-rail` in `modes`. TfL's planner then routes over those trains and names the operator on each leg (`c2c`), and the status check fetches the national-rail lines from TfL as well. TfL's National Rail status is thinner than its Tube status, so a c2c problem that TfL hasn't picked up can still slip through; if that happens the planner's reroute or a longer journey still triggers an alert. The fuller Darwin feed from the Rail Data Marketplace is on the roadmap. The example config is a c2c commute from Upminster to Fenchurch Street.
+
 5. Run it locally:
 
    ```bash
@@ -76,7 +78,7 @@ npm test          # vitest: config, time, TfL client, impact rules, message, ful
 npm run typecheck
 ```
 
-Fixtures in `tests/fixtures/disrupted` (Northern line part suspended, planner reroutes via Victoria and Central) and `tests/fixtures/clean` (good service on the usual route, severe delays on a line you don't use) pin down the "affected" rules and the no-spam rule. Live calls are only made by the real run.
+Fixtures in `tests/fixtures/disrupted` (Northern line part suspended, planner reroutes via Victoria and Central), `tests/fixtures/c2c` (c2c severe delays, planner falls back to the District line) and `tests/fixtures/clean` (good service on the usual route, severe delays on a line you don't use) pin down the "affected" rules and the no-spam rule. Live calls are only made by the real run. Try `npx tsx src/run.ts --dry-run --fixture tests/fixtures/c2c --date 2026-10-07` to see the c2c message.
 
 ## Layout
 
