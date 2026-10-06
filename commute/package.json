@@ -1,0 +1,28 @@
+{
+  "name": "london-commute-alerts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Morning check of your London commute against live TfL status. Sends a Telegram message only when you're affected, with an alternative route.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "morning": "tsx src/run.ts",
+    "morning:dry": "tsx src/run.ts --dry-run",
+    "demo": "tsx src/run.ts --dry-run --fixture tests/fixtures/disrupted",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.0",
+    "vitest": "^5.0.3"
+  }
+}

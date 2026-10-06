@@ -1,0 +1,33 @@
+{
+  "journeys": [
+    {
+      "startDateTime": "2026-10-07T08:14:00",
+      "arrivalDateTime": "2026-10-07T08:52:00",
+      "duration": 38,
+      "legs": [
+        {
+          "duration": 4,
+          "mode": { "id": "walking", "name": "walking" },
+          "departurePoint": { "commonName": "Home" },
+          "arrivalPoint": { "commonName": "Finchley Central Underground Station", "naptanId": "940GZZLUFYC" },
+          "instruction": { "summary": "Walk to Finchley Central Underground Station" }
+        },
+        {
+          "duration": 32,
+          "mode": { "id": "tube", "name": "tube" },
+          "departurePoint": { "commonName": "Finchley Central Underground Station", "naptanId": "940GZZLUFYC" },
+          "arrivalPoint": { "commonName": "Bank Underground Station", "naptanId": "940GZZLUBNK" },
+          "routeOptions": [{ "name": "Northern", "directions": ["Morden via Bank"], "lineIdentifier": { "id": "northern", "name": "Northern" } }],
+          "instruction": { "summary": "Northern line towards Morden via Bank" }
+        },
+        {
+          "duration": 2,
+          "mode": { "id": "walking", "name": "walking" },
+          "departurePoint": { "commonName": "Bank Underground Station", "naptanId": "940GZZLUBNK" },
+          "arrivalPoint": { "commonName": "Work" },
+          "instruction": { "summary": "Walk to Work" }
+        }
+      ]
+    }
+  ]
+}

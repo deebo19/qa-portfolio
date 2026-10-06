@@ -1,0 +1,81 @@
+# Morning commute check: runs the London commute alert every weekday morning.
+# GitHub cron is UTC, so it fires at both 05:15 and 06:15 UTC and a guard step
+# keeps only the run that lands in the 06:00 hour London time (GMT or BST).
+# Cron runs can start 5-15 minutes late when GitHub is busy.
+#
+# Secrets needed (repo Settings -> Secrets and variables -> Actions):
+#   TFL_APP_KEY         free key from https://api-portal.tfl.gov.uk/
+#   TELEGRAM_BOT_TOKEN  from @BotFather
+#   ANTHROPIC_API_KEY   optional; without it the plain template message is sent
+# The commute itself is read from commute/commute.config.json (commit it).
+
+name: Commute alert
+
+on:
+  schedule:
+    - cron: "15 5 * * 1-5"
+    - cron: "15 6 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Print the message instead of sending it"
+        type: boolean
+        default: false
+      force:
+        description: "Send even if the commute is not affected"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: commute-alert
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: commute
+    steps:
+      - name: Only run in the 06:00 hour London time
+        id: gate
+        run: |
+          hour=$(TZ=Europe/London date +%H)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$hour" = "06" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Skipping: London hour is $hour"
+            echo "go=false" >> "$GITHUB_OUTPUT"
+          fi
+        working-directory: .
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.go == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.go == 'true'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: commute/package-lock.json
+
+      - run: npm ci
+        if: steps.gate.outputs.go == 'true'
+
+      - run: npm test
+        if: steps.gate.outputs.go == 'true'
+
+      - name: Check the commute and send the alert
+        if: steps.gate.outputs.go == 'true'
+        env:
+          TFL_APP_KEY: ${{ secrets.TFL_APP_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          args=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then args="$args --dry-run"; fi
+          if [ "${{ inputs.force }}" = "true" ]; then args="$args --force"; fi
+          npm run morning -- $args

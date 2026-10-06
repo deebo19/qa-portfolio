@@ -37,6 +37,10 @@ A second, independent suite lives in [`qa/`](qa/README.md): **Python + Playwrigh
 
 CI (`.github/workflows/ci.yml`) builds the site, runs the JS suite against that exact build, then the Python POM suite, checks the bundle has every referenced file, and only deploys from `main` when everything passed.
 
+## Side project: London commute alerts
+
+[`commute/`](commute/README.md) is a self-contained TypeScript service that checks a London commute against live TfL data each weekday morning and sends a Telegram alert, with an alternative route, only when the usual route is affected. It has its own unit tests, recorded fixtures and a scheduled GitHub Actions workflow (`.github/workflows/commute-morning.yml`).
+
 ## Visitor analytics
 
 Visit and click stats use [GoatCounter](https://www.goatcounter.com): free, no cookies, no consent banner needed.

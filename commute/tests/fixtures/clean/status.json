@@ -1,0 +1,27 @@
+[
+  {
+    "id": "northern",
+    "name": "Northern",
+    "modeName": "tube",
+    "lineStatuses": [{ "statusSeverity": 10, "statusSeverityDescription": "Good Service", "validityPeriods": [] }]
+  },
+  {
+    "id": "victoria",
+    "name": "Victoria",
+    "modeName": "tube",
+    "lineStatuses": [{ "statusSeverity": 10, "statusSeverityDescription": "Good Service", "validityPeriods": [] }]
+  },
+  {
+    "id": "central",
+    "name": "Central",
+    "modeName": "tube",
+    "lineStatuses": [
+      {
+        "statusSeverity": 6,
+        "statusSeverityDescription": "Severe Delays",
+        "reason": "Central Line: Severe delays due to a faulty train at Leytonstone.",
+        "validityPeriods": [{ "fromDate": "2026-10-07T05:30:00Z", "toDate": "2026-10-07T10:00:00Z", "isNow": true }]
+      }
+    ]
+  }
+]

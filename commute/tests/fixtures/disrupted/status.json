@@ -1,0 +1,61 @@
+[
+  {
+    "id": "northern",
+    "name": "Northern",
+    "modeName": "tube",
+    "lineStatuses": [
+      {
+        "statusSeverity": 3,
+        "statusSeverityDescription": "Part Suspended",
+        "reason": "Northern Line: No service between Camden Town and Kennington via Bank while we fix a signal failure at Euston. Tickets are being accepted on London Buses, Thameslink and the Elizabeth line.",
+        "validityPeriods": [{ "fromDate": "2026-10-07T05:30:00Z", "toDate": "2026-10-07T10:00:00Z", "isNow": true }],
+        "disruption": {
+          "category": "RealTime",
+          "description": "Northern Line: No service between Camden Town and Kennington via Bank.",
+          "affectedRoutes": [{ "id": "northern-bank-branch", "name": "Camden Town - Kennington via Bank" }],
+          "affectedStops": [
+            { "id": "940GZZLUEUS", "commonName": "Euston Underground Station" },
+            { "id": "940GZZLUBNK", "commonName": "Bank Underground Station" }
+          ]
+        }
+      },
+      {
+        "statusSeverity": 9,
+        "statusSeverityDescription": "Minor Delays",
+        "reason": "Northern Line: Minor delays on the rest of the line.",
+        "validityPeriods": [{ "fromDate": "2026-10-07T05:30:00Z", "toDate": "2026-10-07T10:00:00Z", "isNow": true }]
+      }
+    ]
+  },
+  {
+    "id": "victoria",
+    "name": "Victoria",
+    "modeName": "tube",
+    "lineStatuses": [{ "statusSeverity": 10, "statusSeverityDescription": "Good Service", "validityPeriods": [] }]
+  },
+  {
+    "id": "central",
+    "name": "Central",
+    "modeName": "tube",
+    "lineStatuses": [{ "statusSeverity": 10, "statusSeverityDescription": "Good Service", "validityPeriods": [] }]
+  },
+  {
+    "id": "jubilee",
+    "name": "Jubilee",
+    "modeName": "tube",
+    "lineStatuses": [
+      {
+        "statusSeverity": 4,
+        "statusSeverityDescription": "Planned Closure",
+        "reason": "Jubilee Line: No service Finchley Road to Stanmore this weekend.",
+        "validityPeriods": [{ "fromDate": "2026-10-10T04:00:00Z", "toDate": "2026-10-12T01:00:00Z", "isNow": false }]
+      }
+    ]
+  },
+  {
+    "id": "elizabeth",
+    "name": "Elizabeth line",
+    "modeName": "elizabeth-line",
+    "lineStatuses": [{ "statusSeverity": 10, "statusSeverityDescription": "Good Service", "validityPeriods": [] }]
+  }
+]
